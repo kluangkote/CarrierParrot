@@ -8,6 +8,7 @@ drone.connect(function() {
     drone.GPSSettings.resetHome();
     drone.WifiSettings.outdoorSetting(1);
     drone.on("PositionChanged", function(data) {
-	console.log(data);
+    	console.log('latitude: ' + data['latitude'])
+    	console.log('longitude: ' + data['longitude'])
     })
 });
