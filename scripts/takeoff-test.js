@@ -7,5 +7,5 @@ drone.connect(function() {
     drone.takeOff();
     setTimeout(function() {
 	drone.land();
-    }, 5000);
+    }, 1000);
 });
