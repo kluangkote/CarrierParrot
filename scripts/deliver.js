@@ -2,7 +2,6 @@
 
 var bebop = require("../lib/node_modules/node-bebop");
 var helper = require("./helper.js")
-// 37.429909, -122.174136
 
 var drone = bebop.createClient();
 console.log(process.argv)
