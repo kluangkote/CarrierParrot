@@ -1,7 +1,11 @@
 "use strict";
 
 var bebop = require("../lib/node_modules/node-bebop");
+var fs = require("fs");
 var helper = require("./helper.js")
+var sys = require('sys')
+var exec = require('child_process').exec;
+var child;
 
 var drone = bebop.createClient();
 console.log(process.argv)
@@ -50,18 +54,21 @@ drone.connect(function() {
 	if(helper.withinRange(gpsData['latitude'], gpsData['longitude'], goalLat, goalLong, .005)){
 	    // make the drone go down to one meter and wait for face
 	    console.log("stopped because of reaching coordinates!")
+	    for(var i = 0; i < 10; i++){
+		var output = fs.createWriteStream("./video.h264"),
+		    video = drone.getVideoStream();
+		video.pipe(output)
+		setTimeout(function () {
+		    // console.log("unpiping video")
+		    // video.unpipe(output)
+		    console.log("closing output")
+		    output.end()
+		}, 10000)
+		// create image files
+		child = exec("ffmpeg -i video.h264 -qscale:v 2 output_%03d.jpg");
+	    }
 	    drone.land()
 	}
 	});
     })
 });
-
-// get gps data
-// orient drone toward destination
-// rise up x meters
-// fly towards destination
-// check if we are at destination
-// go down to 1 meter
-// wait for face
-// release payload
-// fly home
